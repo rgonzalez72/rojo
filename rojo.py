@@ -5,6 +5,7 @@ import threading
 import time
 import random
 import qrcode
+import os
 
 COLOR_RED = wx.Colour(190, 20, 20)
 COLOR_BLACK = wx.Colour(0,0,0)
@@ -70,6 +71,7 @@ class ResultPanel (wx.Panel):
         mySizer.Add (bitmap, 0, wx.ALL | wx.CENTER, 10)
 
         self.SetSizerAndFit(mySizer)
+        os.unlink (TMP_FILE)
 
 class ResultFrame(wx.Frame):
     def __init__ (self, parent=None):
@@ -185,10 +187,16 @@ class GamePanel (wx.Panel):
         else:
             self._colorPanel.SetBackgroundColour(event.data)
 
+def getIcon ():
+    icon = wx.Icon ()
+    icon.CopyFromBitmap(wx.Bitmap("LS46.png", wx.BITMAP_TYPE_ANY))
+    return icon
+
 class MainFrame (wx.Frame):
     def __init__(self):
         super().__init__(parent=None, title='Rojo o Negro')
 
+        self.SetIcon(getIcon())
         panel = GamePanel(self)
 
         self.SetClientSize(panel.GetSize())
