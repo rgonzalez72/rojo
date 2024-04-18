@@ -6,6 +6,7 @@ import time
 import random
 import qrcode
 import os
+import pygame
 
 COLOR_RED = wx.Colour(190, 20, 20)
 COLOR_BLACK = wx.Colour(0,0,0)
@@ -121,6 +122,7 @@ class GamePanel (wx.Panel):
         EVT_COLOR_RESULT(self, self._OnColorEvent)
         self._colorThread = None
 
+        pygame.mixer.init()
 
     def _getSize (self):
         return self._currentPhase + self.PHASE_MIN
@@ -153,6 +155,10 @@ class GamePanel (wx.Panel):
         self._redButton.Disable ()
         self._blackButton.Disable ()
         self._startBtn.Enable ()
+
+        soundFile = os.path.abspath (os.path.join (os.path.dirname(__file__), "sound.mp3"))
+        pygame.mixer.music.load (soundFile)
+        pygame.mixer.music.play()
 
     def _correctGuess (self):
         self._currentGuess += 1
@@ -189,7 +195,8 @@ class GamePanel (wx.Panel):
 
 def getIcon ():
     icon = wx.Icon ()
-    icon.CopyFromBitmap(wx.Bitmap("LS46.png", wx.BITMAP_TYPE_ANY))
+    iconFile = os.path.abspath (os.path.join (os.path.dirname(__file__), "LS46.png"))
+    icon.CopyFromBitmap(wx.Bitmap(iconFile, wx.BITMAP_TYPE_ANY))
     return icon
 
 class MainFrame (wx.Frame):
